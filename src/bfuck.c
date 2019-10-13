@@ -141,7 +141,7 @@ void readProgram ()
     }
   }
   //  Saving the length of program and trimming excess space
-  prglen = read + 1;
+  prglen = read;
   prg = realloc(prg, sizeof(char) * prglen);
 }
 
@@ -149,7 +149,7 @@ void readProgram ()
 void interpret ()
 {
   //  Loop till end of the program
-  while (pos < prglen)
+  while (pos < prglen - 1)
   {
     //  Move memory pointer left
     if (prg[pos] == '<')

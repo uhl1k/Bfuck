@@ -91,6 +91,11 @@ void parseParameters (int argc, char** argv)
 void createMemory ()
 {
   mem = (char*) malloc(memlen * sizeof(char));
+
+  for (int i = 0; i < memlen; i++)
+  {
+    mem[i] = 0;
+  }
 }
 
 void readProgram ()

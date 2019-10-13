@@ -18,6 +18,7 @@ char* mem;
 //  The file with program
 char* filename;
 
+//  Intializes the program variables
 void initialize ()
 {
   pos = 0;
@@ -25,6 +26,7 @@ void initialize ()
   memlen = 30000;
 }
 
+//  Writes help on screen
 void showHelp ()
 {
   printf("\n");
@@ -178,9 +180,16 @@ void interpret ()
     }
     else if (prg[pos] == '[')
     {
+      int cls = pos;
+
       if (mem[memptr] == 0)
       {
         pos++;
+        if (pos == prglen)
+        {
+          printf("\n[ERROR] - Unclosed loop at %u!\n\n", cls);
+          exit(0);
+        }
         int depth = 0;
         while(!(prg[pos] == ']' && depth == 0))
         {
@@ -193,6 +202,11 @@ void interpret ()
             depth--;
           }
           pos++;
+          if (pos == prglen)
+          {
+            printf("\n[ERROR] - Unclosed loop at %u!\n\n", cls);
+            exit(0);
+          }
         }
       }
       else
@@ -208,7 +222,13 @@ void interpret ()
       }
       else
       {
+        int cls = pos;
         pos--;
+        if (pos < 0)
+        {
+          printf("\n[ERROR] - Unopened loop at %u!\n\n", cls);
+          exit(0);
+        }
         int depth = 0;
         while(!(prg[pos] == '[' && depth == 0))
         {
@@ -221,6 +241,11 @@ void interpret ()
             depth--;
           }
           pos--;
+          if (pos < 0)
+          {
+            printf("\n[ERROR] - Unopened loop at %u!\n\n", cls);
+            exit(0);
+          }
         }
       }
     }

@@ -56,8 +56,10 @@ void showHelp ()
   printf("\n");
 }
 
+//  Parses parameters from the command line
 void parseParameters (int argc, char** argv)
 {
+  //  Loops thru the parameters skipping first (name of binary)
   for (int i = 1; i < argc;)
   {
     //  User wants to show help
@@ -90,6 +92,7 @@ void parseParameters (int argc, char** argv)
   }
 }
 
+//  Allocates and clears the memory
 void createMemory ()
 {
   mem = (char*) malloc(memlen * sizeof(char));
@@ -100,46 +103,58 @@ void createMemory ()
   }
 }
 
+//  Reads program from a file
 void readProgram ()
 {
+  //  Variables intialization
   FILE* fp = fopen(filename, "r");
-
   int ch;
-  prg = realloc(NULL, sizeof(char) * 10);
   prglen = 10;
 
+  //  Allocating memory for program
+  prg = realloc(NULL, sizeof(char) * 10);
   if (!prg)
   {
     printf("[ERROR] - could not allocate memory for program.");
     exit(0);
   }
 
-  int read = 0;
+  //  The number of char that is Brainfuck instruction that is being read
+  int read = 1;
 
+  //  Looping thru each char in file till EOF
   while (EOF != (ch = fgetc(fp)))
   {
+    //  Is it Brainfuck instruction?
     if (ch == '<' || ch == '>' || ch == '+' || ch == '-' || ch == '.' || ch == ',' || ch == '[' || ch == ']')
     {
-      if (read == prglen - 1)
+      //  Available memory is filled
+      if (read == prglen)
       {
+        //  Extending memory
         prglen = prglen * 2;
         prg = realloc(prg, sizeof(char) * prglen);
       }
-      prg[read] = ch;
+      //  Putting instruction into program array
+      prg[read - 1] = ch;
       read++;
     }
   }
-
-  prglen = read;
+  //  Saving the length of program and trimming excess space
+  prglen = read + 1;
   prg = realloc(prg, sizeof(char) * prglen);
 }
 
+//  interprets the brainfuck program
 void interpret ()
 {
+  //  Loop till end of the program
   while (pos < prglen)
   {
+    //  Move memory pointer left
     if (prg[pos] == '<')
     {
+      //  Outside of memory
       if (pos == 0)
       {
         printf("\n[ERROR] - Program pointer cannot be decremented to negative numbers!\n\n");
@@ -148,8 +163,10 @@ void interpret ()
       memptr--;
       pos++;
     }
+    //  Move memory pointer right
     else if (prg[pos] == '>')
     {
+      //  Out of memory
       if (pos == memlen - 1)
       {
         printf("\n[ERROR] - Program pointer cannot be decremented to negative numbers!\n\n");
@@ -158,38 +175,44 @@ void interpret ()
       memptr++;
       pos++;
     }
+    //  Increment current memory cell
     else if (prg[pos] == '+')
     {
       mem[memptr]++;
       pos++;
     }
+    //  Decrement current memory cell
     else if (prg[pos] == '-')
     {
       mem[memptr]--;
       pos++;
     }
+    //  Print current memory cell
     else if (prg[pos] == '.')
     {
       printf("%c", mem[memptr]);
       pos++;
     }
+    // Read into current memory cell
     else if (prg[pos] == ',')
     {
       scanf("%c", mem[memptr]);
       pos++;
     }
+    // The start of loop
     else if (prg[pos] == '[')
     {
-      int cls = pos;
-
+      //  Zero in memory, skip the loop
       if (mem[memptr] == 0)
       {
+        int cls = pos;
         pos++;
         if (pos == prglen)
         {
           printf("\n[ERROR] - Unclosed loop at %u!\n\n", cls);
           exit(0);
         }
+        //  Skip instructions in loop and inner loops
         int depth = 0;
         while(!(prg[pos] == ']' && depth == 0))
         {
@@ -209,17 +232,21 @@ void interpret ()
           }
         }
       }
+      //  Start executing loop
       else
       {
         pos++;
       }
     }
+    //  The end of a loop
     else if (prg[pos] == ']')
     {
+      //  Not executing the loop again
       if (mem[memptr] == 0)
       {
         pos++;
       }
+      //  Go to the start of the loop and execute it
       else
       {
         int cls = pos;
@@ -229,6 +256,7 @@ void interpret ()
           printf("\n[ERROR] - Unopened loop at %u!\n\n", cls);
           exit(0);
         }
+        //  Skip all instructions in loop and inner loops to the start of the loop
         int depth = 0;
         while(!(prg[pos] == '[' && depth == 0))
         {
@@ -252,6 +280,7 @@ void interpret ()
   }
 }
 
+//  The main function of this program
 int main(int argc, char** argv)
 {
   initialize();

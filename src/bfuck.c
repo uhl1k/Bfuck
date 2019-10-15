@@ -13,7 +13,7 @@ int pos;
 //  The memory for program
 int memptr;
 int memlen;
-char* mem;
+unsigned char* mem;
 
 //  The file with program
 char* filename;
@@ -79,7 +79,7 @@ void parseParameters (int argc, char** argv)
       else
       {
         i++;
-        memlen = atoi(argv[i]);
+        memlen = (int) strtol(argv[i], (char**) NULL, 10);
         i++;
       }
     }
@@ -120,7 +120,7 @@ void readProgram ()
   }
 
   //  The number of char that is Brainfuck instruction that is being read
-  int read = 1;
+  int read = 0;
 
   //  Looping thru each char in file till EOF
   while (EOF != (ch = fgetc(fp)))
@@ -136,7 +136,7 @@ void readProgram ()
         prg = realloc(prg, sizeof(char) * prglen);
       }
       //  Putting instruction into program array
-      prg[read - 1] = ch;
+      prg[read] = ch;
       read++;
     }
   }
@@ -149,13 +149,13 @@ void readProgram ()
 void interpret ()
 {
   //  Loop till end of the program
-  while (pos < prglen - 1)
+  while (pos < prglen)
   {
     //  Move memory pointer left
     if (prg[pos] == '<')
     {
       //  Outside of memory
-      if (pos == 0)
+      if (memptr == 0)
       {
         printf("\n[ERROR] - Program pointer cannot be decremented to negative numbers!\n\n");
         exit(0);
@@ -167,7 +167,7 @@ void interpret ()
     else if (prg[pos] == '>')
     {
       //  Out of memory
-      if (pos == memlen - 1)
+      if (memptr == memlen - 1)
       {
         printf("\n[ERROR] - Program pointer cannot be decremented to negative numbers!\n\n");
         exit(0);
@@ -196,7 +196,7 @@ void interpret ()
     // Read into current memory cell
     else if (prg[pos] == ',')
     {
-      scanf("%c", mem[memptr]);
+      mem[memptr] = getchar();
       pos++;
     }
     // The start of loop
@@ -288,4 +288,6 @@ int main(int argc, char** argv)
   createMemory();
   readProgram();
   interpret();
+
+  return (0);
 }

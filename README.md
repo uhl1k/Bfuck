@@ -40,7 +40,7 @@ in range 1 - 65535. If used multiple of these options only last is used.
 ## Versioning
 
 * **0.9-beta**
-* Is a first working version.
+  * Is a first working version.
 
 ## Authors
 

@@ -8,32 +8,43 @@ I made up for my self.
 
 ### Prerequisites
 
-
+This interpreter will run on any hardware that can run C programs and have at
+least TUI (text user interface), keyboard and some Brainfuck source files on
+a permanent storage. The size of memory array can be adjusted to the programers
+needs and machines limitations.
 
 ### Installing
 
 
 
-## Deployment
+### Running
 
+```
+bfuck [options] FILENAME
+```
 
+**FILENAME** is the name of the file with Brainfuck source code that should be
+interpreted.
+
+Available **options** are:
+
+* *-h* shows help and terminates the interpreter.
+* *-m* sets size of the byte array used as memory. Must be followed by a number
+in range 1 - 65535. If used multiple of these options only last is used.
 
 ## Built With
 
 * [atom] - (https://atom.io/) - programing
 * [gcc] - (gcc 7.4.0) - compiling
 
-## Contributing
-
-
-
 ## Versioning
 
-
+* **0.9-beta**
+* Is a first working version.
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **Roman Janků** - [uhl1k](https://github.com/uhl1k/)
 
 ## License
 

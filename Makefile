@@ -1,3 +1,5 @@
+all: clean build
+
 clean:
 	rm bin/*
 	rmdir bin
@@ -5,6 +7,3 @@ clean:
 build:
 	mkdir bin
 	gcc -o bin/bfuck src/bfuck.c
-
-bfuck:
-	clean build

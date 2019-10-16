@@ -15,9 +15,38 @@ least TUI (text user interface), keyboard and some Brainfuck source files on
 a permanent storage. The size of memory array can be adjusted to the programers
 needs and machines limitations.
 
+### Downloading
+
+For downloading the Bfuck go to the release page of this project and download
+the source code of the version you fancy (latest version is recommended).
+After downloading you have to compile the source code (see the next subchapter)
+and you are ready to run.
+
+If you don't want to compile the source code your self you can download already
+compiled binaries in the release page. The `bfuck` is for UNIX systems and
+`bfuck.exe` is for Windows systems. Then skip to the *Running* subchapter, as
+you don't have to compile.
+
 ### Compiling
 
+After downloading the source code you have to compile in order to be able to run
+it. This can be easily made by `make` command on UNIX systems. On Windows
+systems you have to compile it all by your self. The compiled binary will be
+placed in `/bin` file (default behaviour). Copy the executable to the
+desired location and you are ready to run.
 
+The source code is compiling on gcc version 7.4.0 without any errors and
+warnings. If you want to compile the source code your self you are welcome.
+The only source file you have to worry about is `/src/bfuck.c`. All functions
+are implemented in this file and it has no dependecies but those that should
+be available in standard library.
+
+Available targets in make command are:
+
+* **all** will call both clean and build in this order. It is also default
+target.
+* **clean** will clean all binaries.
+* **build** will build the binary.
 
 ### Running
 

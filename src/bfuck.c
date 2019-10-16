@@ -1,6 +1,6 @@
 /*
 
-    Bfuck - minimalistic brainfuck interpreter written in C
+    Bfuck - Simple Brainfuck interpreter written in C
     Copyright (C) 2019  uhl1k (Roman Janků)
 
     This program is free software: you can redistribute it and/or modify
@@ -44,13 +44,14 @@ void initialize ()
   pos = 0;
   memptr = 0;
   memlen = 30000;
+  filename = "";
 }
 
 //  Writes help on screen
 void showHelp ()
 {
   printf("\n");
-  printf("Bfuck - Simple Branfuck interpreter written in C as an excercise.\n");
+  printf("Bfuck - Simple Brainfuck interpreter written in C.\n");
   printf("(c) 2019, Roman Janků, GNU GPL v3\n");
 
   printf("-----------------------------------------------------------------\n");
@@ -99,7 +100,15 @@ void parseParameters (int argc, char** argv)
       else
       {
         i++;
-        memlen = (int) strtol(argv[i], (char**) NULL, 10);
+        int num = (int) strtol(argv[i], (char**) NULL, 10);
+        if (num > 0 && num < 65536)
+        {
+          memlen = num;
+        }
+        else
+        {
+          printf("[ERROR] - Memory length is not valid. Will use previous (default) value.\n");
+        }
         i++;
       }
     }
@@ -109,6 +118,12 @@ void parseParameters (int argc, char** argv)
       filename = argv[i];
       i++;
     }
+  }
+
+  if (strcmp(filename, "") == 0)
+  {
+    printf("[ERROR] - no file name entered. Enter file name or use the optionh -h.\n");
+    exit(0);
   }
 }
 

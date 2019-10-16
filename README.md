@@ -5,6 +5,8 @@ I made up for my self.
 
 ## Getting Started
 
+This chapter will guide you thru the process of downloading, compiling and
+running the Bfuck
 
 ### Prerequisites
 
@@ -13,7 +15,7 @@ least TUI (text user interface), keyboard and some Brainfuck source files on
 a permanent storage. The size of memory array can be adjusted to the programers
 needs and machines limitations.
 
-### Installing
+### Compiling
 
 
 
